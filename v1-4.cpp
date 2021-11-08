@@ -6,18 +6,32 @@
 
 int main (int argc, char **argv){
     int comm_size, prank;
-    int N = 10;
+    int N = 5;
     int v[N], m[N][N];
     int local_min;
     int local_max;
     int pieces;
 
-    srand(time(0));
+    FILE *fp;
+
+    fp = fopen("./matrix.txt", "r");
+
+    //srand(time(0));
+
+    // for(int i = 0; i < N; i++){
+    //     v[i] = 1;//rand()%20;
+    //     for(int j = 0; j < N; j++){
+    //         m[i][j] = i;//rand()%20;
+    //     }
+    // }
 
     for(int i = 0; i < N; i++){
-        v[i] = 1;//rand()%20;
+        fscanf(fp, "%d", &v[i]);
+    }
+
+    for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            m[i][j] = i;//rand()%20;
+            fscanf(fp, "%d", &m[i][j]);
         }
     }
 
