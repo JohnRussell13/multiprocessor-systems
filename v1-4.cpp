@@ -6,15 +6,16 @@
 
 int main (int argc, char **argv){
     int comm_size, prank;
-    int N = 5;
-    int v[N], m[N][N];
+    int N = 0;
+    int v[100], m[100][100];
     int local_min;
     int local_max;
     int pieces;
 
-    FILE *fp;
+    FILE *fpv, *fpm;
 
-    fp = fopen("./matrix.txt", "r");
+    fpv = fopen(argv[1], "r");
+    fpm = fopen(argv[2], "r");
 
     //srand(time(0));
 
@@ -25,13 +26,13 @@ int main (int argc, char **argv){
     //     }
     // }
 
-    for(int i = 0; i < N; i++){
-        fscanf(fp, "%d", &v[i]);
+    while(fscanf(fpv, "%d", &v[N]) != EOF){
+        N++;
     }
 
     for(int i = 0; i < N; i++){
         for(int j = 0; j < N; j++){
-            fscanf(fp, "%d", &m[i][j]);
+            fscanf(fpm, "%d", &m[i][j]);
         }
     }
 
