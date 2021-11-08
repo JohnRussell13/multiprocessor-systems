@@ -34,8 +34,10 @@ int main (int argc, char **argv){
         local_max = N;
     }
 
-    for(int i = local_min; i < local_max; i++){
-        local_sum += v1[i] * v2[i];
+    if(local_min < N){
+        for(int i = local_min; i < local_max; i++){
+            local_sum += v1[i] * v2[i];
+        }
     }
 
     MPI_Reduce(&local_sum, &total, 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
