@@ -21,7 +21,7 @@ clean:
 	
 run:
 	mpirun -np 4 ./t1
-	mpirun -np 4 ./t2
+	mpirun -np 4 ./t2 20
 	mpirun -np 4 ./t3
 	mpirun -np 4 ./t4 vector.txt matrix.txt
 	./t5 6
