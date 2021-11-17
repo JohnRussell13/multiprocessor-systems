@@ -1,3 +1,5 @@
+all: t1 t2 t3 t4 t5 t6 e1
+
 t1: v1-1.cpp
 	mpicc v1-1.cpp -o t1
 t2: v1-2.cpp
