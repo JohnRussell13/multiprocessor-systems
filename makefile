@@ -18,3 +18,12 @@ e1: paral.cpp
 .PHONY: clean
 clean:
 	rm -f $(ODIR)/*.o t1 t2 t3 t4 t5 t6 e1
+	
+run:
+	mpirun -np 4 ./t1
+	mpirun -np 4 ./t2
+	mpirun -np 4 ./t3
+	mpirun -np 4 ./t4 vector.txt matrix.txt
+	./t5 6
+	./t6 6
+	./e1 6
