@@ -11,7 +11,8 @@ int main (int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &prank);
     
-    int r[prank];
+    //int r[prank];
+    int *r = (int*) malloc(prank * sizeof(int));
 
     srand(time(0) + prank);
     pkg = 10*prank + rand()%10;
@@ -35,6 +36,8 @@ int main (int argc, char **argv){
         }
     }
     printf("\n");
+    free(r);
+    r = NULL;
 
     MPI_Finalize();
 }

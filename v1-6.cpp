@@ -8,8 +8,9 @@ int main(int argc , char* argv []){
     int N;
     printf("Number: ");
     scanf("%d", &N);
-    int ind[N+1];
-
+    //int ind[N+1];
+    int *ind = (int*) malloc((N+1) * sizeof(int));
+    
     for(int i = 2; i <= N; i++){
         ind[i] = 0;
     }
@@ -130,6 +131,9 @@ int main(int argc , char* argv []){
     }
     s = omp_get_wtime () - s;
     printf("N/A executed for %lf s\n", s);
+    
+    free(ind);
+    ind = NULL;
 
 
     return 0;

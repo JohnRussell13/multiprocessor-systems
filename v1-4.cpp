@@ -40,8 +40,10 @@ int main (int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &prank);
     pieces = ceil(float(N)/comm_size);
-    int total[pieces*comm_size];
-    int local_sum[pieces];
+    //int total[pieces*comm_size];
+    //int local_sum[pieces];
+    int *total = (int*) malloc(pieces*comm_size * sizeof(int));
+    int *local_sum = (int*) malloc(pieces * sizeof(int));
 
     local_min = prank * pieces;
     
@@ -65,6 +67,11 @@ int main (int argc, char **argv){
         }
         printf("]\n");
     }
+    
+    free(total);
+    total = NULL;
+    free(local_sum);
+    local_sum = NULL;
 
     MPI_Finalize();
 }
