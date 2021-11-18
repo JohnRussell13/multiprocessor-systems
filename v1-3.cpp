@@ -7,7 +7,11 @@
 int main (int argc, char **argv){
     int comm_size, prank;
     int N = 3;
-    int v1[N], v2[N];
+    //int v1[N], v2[N];
+    
+    int *v1 = (int*) malloc(N * sizeof(int));
+    int *v2 = (int*) malloc(N * sizeof(int));
+    
     int local_min;
     int local_max;
     int local_sum = 0;
@@ -53,6 +57,11 @@ int main (int argc, char **argv){
         }
         printf("] = %d\n", total);
     }
+    
+    free(v1);
+    v1 = NULL;
+    free(v2);
+    v2 = NULL;
 
     MPI_Finalize();
 }
