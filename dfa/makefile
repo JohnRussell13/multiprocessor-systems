@@ -13,7 +13,7 @@ run:
 	mpiexec -n 3 python main.py
 
 pass:
-	mpiexec -n 3 python pass.py
+	mpiexec -n 7 python pass.py
 
 .PHONY: clean
 clean:

@@ -10,21 +10,6 @@ from mpi4py import MPI
 ##	Pass input trough the network
 ##
 
-def net(input, weights, output_temp, len_dim, dim):
-    #INIT
-    output = copy.deepcopy(output_temp)
-    output[0] = input
-    for i in range(len_dim):
-        for j in range(dim[i+1]):
-            output[i+1][j] += weights[i][j][-1]
-            for k in range(dim[i]):
-                output[i+1][j] += weights[i][j][k]*output[i][k]
-        if (i+1) < len_dim:
-            output[i+1][output[i+1] < 0] = 0 #relu
-        else:
-            output[i+1] = np.exp(output[-1])/np.sum(np.exp(output[-1])) #softmax
-    return output
-
 def test(a, weights, b, dim, perc):
     #INIT
     output_temp = []
@@ -33,10 +18,14 @@ def test(a, weights, b, dim, perc):
     len_dim = len(dim)-1
     per = 0
 
-    if rank == 0:
-        per = int(len(a)*perc/100)
+    #MPI INIT
+    per_layer = int(size/len_dim) #how many processors per layer
+    if rank != size:
+        layer = int(rank/per_layer) #layer map
+        part = rank - layer*per_layer #which part of layer
+        layer_part_size = int(dim[layer+1]/per_layer)
 
-    per = comm.bcast(per, root=0)
+    per = int(len(a)*perc/100)
 
     input = a[:per]
     output = b[:per]
@@ -45,33 +34,55 @@ def test(a, weights, b, dim, perc):
     p = 0
 
     for ind in range(per):
-        
+        if rank != size:
+            #INIT
+            res = copy.deepcopy(output_temp)
 
-        res = copy.deepcopy(output_temp)
-        res[0] = input[ind]
-        for i in range(len_dim):
-            for j in range(dim[i+1]):
-                res[i+1][j] += weights[i][j][-1]
-                for k in range(dim[i]):
-                    res[i+1][j] += weights[i][j][k]*res[i][k]
-            if (i+1) < len_dim:
-                res[i+1][res[i+1] < 0] = 0 #relu
+            if layer == 0:
+                net_in = input[ind]
+            
             else:
-                res[i+1] = np.exp(res[-1])/np.sum(np.exp(res[-1])) #softmax
+                net_in = []
+                for i in range(per_layer):
+                    net_in = np.append(net_in, comm.recv(source = (layer-1)*per_layer + i))
 
+            
+            net_out = np.zeros(int(dim[layer+1]/per_layer))
+            for i in range(int(dim[layer+1]/per_layer)):
+                net_out[i] = weights[i][-1] #bias
+                for j in range(dim[layer]):
+                    net_out[i] += weights[i][j]*net_in[j] #weights * previous_layer_output
 
-        if rank==0:
+            if layer < len_dim-1:
+                net_out[net_out < 0] = 0 #relu
+            else:
+                net_out = np.exp(net_out)/np.sum(np.exp(net_out)) #softmax
+
+            if layer < len_dim-1:
+                for i in range(per_layer):
+                    comm.send(net_out, dest = (layer+1)*per_layer + i)
+            
+            else:
+                comm.send(net_out, dest = size)
+
+        if rank == size:
+            res = []
+            for i in range(per_layer):
+                res = np.append(res, comm.recv(source = (len_dim-1)*per_layer + i))
+
+        if rank == size:
             if ind % (per/10) == 0:
                 print(f"Testing {p*10}%")
                 p += 1
-            if np.argmax(res[-1]) == output[ind][0]:
+            if np.argmax(res) == output[ind][0]:
                 t += 1
-    if rank == 0:
+    if rank == size:
         print(f"Accuracy: {t}/{per}")
 
 comm = MPI.COMM_WORLD
-size = comm.Get_size()
+size = comm.Get_size() - 1
 rank = comm.Get_rank()
+#rank == size - final part of the network
 
 input = x_test
 k = 14/28
@@ -82,14 +93,19 @@ output = y_test
 output = [i.flatten() for i in output]
 
 dim = [14*14,10,10,10]
-
-
 len_dim = len(dim)-1
-dimVar = []
-for i in range(len_dim):
-    dimVar.append((dim[i+1], (dim[i]+1)))
-weights = []
-for i in range(len_dim):
-    weights.append(np.random.normal(0, 0.1, dimVar[i]))
+
+#MPI INIT
+per_layer = int(size/len_dim) #how many processors per layer
+if rank != size:
+    layer = int(rank/per_layer) #layer map
+    part = rank - layer*per_layer #which part of layer
+    layer_part_size = int(dim[layer+1]/per_layer)
+
+if rank != size:
+    weights = np.random.normal(0, 0.1, (int(dim[layer+1]/per_layer), (dim[layer]+1)))
+
+if rank == size:
+    weights = 0
 
 test(input, weights, output, dim, 10)
