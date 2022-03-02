@@ -1,6 +1,12 @@
 import math
 import copy
 import numpy as np
+import tensorflow.keras as keras
+import tensorflow as tf
+(x_train, y_train),(x_test, y_test) = tf.keras.datasets.mnist.load_data()
+import cv2
+import time
+from mpi4py import MPI
 
 ##
 ##	Pass input trough the network
@@ -129,3 +135,37 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
         print(f'Epoch {e+1}/{epochs}: Seen - Err: {ce/siz:.5f}; Acc: {tot/siz:.5f}. Unseen - Err: {b_ce/b_siz:.5f}; Acc: {b_tot/b_siz:.5f}.')
         epoch_w.append(weights)
     return epoch_w
+
+comm = MPI.COMM_WORLD
+size = comm.Get_size()
+rank = comm.Get_rank()
+
+size = int(len(x_train)/100)
+size2 = 101
+
+k = 14/28
+
+a = x_train[:size]
+a = [cv2.resize(i, (0, 0), fx = k, fy = k) for i in a]
+a = [i.flatten()/256 - 1/2 for i in a]
+
+b = y_train[:size]
+b = [i.flatten() for i in b]
+
+c = x_test[:size2]
+c = [cv2.resize(i, (0, 0), fx = k, fy = k) for i in c]
+c = [i.flatten()/256 - 1/2 for i in c]
+
+d = y_test[:size2]
+d = [i.flatten() for i in d]
+
+epochs = 10
+dim = [14*14,10,10,10]
+start = time.perf_counter()
+epoch_w = train(a, b, c, d, epochs, dim)
+end = time.perf_counter()
+print(f"Training finished in {end - start:.2f}s.")
+if epochs > 1:
+    weights = epoch_w[-1]
+else:
+    weights = epoch_w
