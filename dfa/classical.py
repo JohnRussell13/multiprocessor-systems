@@ -1,10 +1,5 @@
 import math
 import copy
-import numpy as np
-
-##
-##	Pass input trough the network
-##
 
 def net(input, weights, output_temp, len_dim, dim):
     output = copy.deepcopy(output_temp)
@@ -20,16 +15,7 @@ def net(input, weights, output_temp, len_dim, dim):
           output[i+1] = np.exp(output[-1])/np.sum(np.exp(output[-1])) #softmax
     return output
 
-##
-##	Train the network
-##
-
 def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate = 0.01):
-
-##
-##	Init values
-##
-
     # Calc once, and use it
     input = np.array(input)
     output = np.array(output)
@@ -60,17 +46,8 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
     for i in range(len_dim):
         weights.append(np.random.normal(0, 0.1, dimVar[i]))
 
-##
-##	Start the training
-##
-
     # Iterate epochs
     for e in range(epochs):
-
-##
-##	Split the data
-##
-
         rand = np.random.rand(len(input))
         input_train = input[rand >= p]
         input_test = input[rand < p]
@@ -78,26 +55,13 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
         output_test = output[rand < p]
 
         for (x,y) in zip(input_train, output_train):
-
-##
-##	Find the output error
-##
-
             out = net(x, weights, output_temp, len_dim, dim)
             delta = out[-1] - outs_temp[y][0]
-
-##
-##	Find the error of each layer
-##
             
             da = []
             for i in range(len_dim-1):
                 da.append(np.dot(B[i], delta))
             da.append(np.append(delta, delta))
-
-##
-##	Update the weights
-##
 
             for i in range(len_dim):
                 weights[i][:,:-1] += -learn_rate*np.tensordot(da[i][:dim[i+1]], out[i], axes=0) #- lmd*weights[i][:,:-1]
@@ -106,9 +70,6 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
             #weights[weights < -1] = -1
             #weights[weights > 1] = 1
 
-##
-##	Test and print the results
-##
 
         tot = 0
         siz = len(input_test)
@@ -129,3 +90,36 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
         print(f'Epoch {e+1}/{epochs}: Seen - Err: {ce/siz:.5f}; Acc: {tot/siz:.5f}. Unseen - Err: {b_ce/b_siz:.5f}; Acc: {b_tot/b_siz:.5f}.')
         epoch_w.append(weights)
     return epoch_w
+    
+import cv2
+import time
+
+size = int(len(x_train)/100)
+size2 = 101
+
+k = 14/28
+
+a = x_train[:size]
+a = [cv2.resize(i, (0, 0), fx = k, fy = k) for i in a]
+a = [i.flatten()/256 - 1/2 for i in a]
+
+b = y_train[:size]
+b = [i.flatten() for i in b]
+
+c = x_test[:size2]
+c = [cv2.resize(i, (0, 0), fx = k, fy = k) for i in c]
+c = [i.flatten()/256 - 1/2 for i in c]
+
+d = y_test[:size2]
+d = [i.flatten() for i in d]
+
+epochs = 10
+dim = [14*14,10,10,10]
+start = time.perf_counter()
+epoch_w = train(a, b, c, d, epochs, dim)
+end = time.perf_counter()
+print(f"Training finished in {end - start:.2f}s.")
+if epochs > 1:
+    weights = epoch_w[-1]
+else:
+    weights = epoch_w
