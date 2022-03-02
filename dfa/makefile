@@ -10,7 +10,7 @@ pass_o:
 	python3 pass_cl.py
 
 run:
-	mpiexec -n 3 python main.py
+	mpiexec -n 7 python main.py
 
 pass:
 	mpiexec -n 7 python pass.py

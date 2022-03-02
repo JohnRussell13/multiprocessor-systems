@@ -36,8 +36,6 @@ def test(a, weights, b, dim, perc):
     for ind in range(per):
         if rank != size:
             #INIT
-            res = copy.deepcopy(output_temp)
-
             if layer == 0:
                 net_in = input[ind]
             

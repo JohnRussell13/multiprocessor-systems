@@ -98,13 +98,22 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
                 da.append(np.dot(B[i], delta))
             da.append(np.append(delta, delta))
 
+            #not needed, just for ilustration
+            #use da[i][:dim[i+1]] instead of dw
+            #use da[i][dim[i+1]:] instead of db
+            dw = []
+            db = []
+            for i in range(len_dim):
+                dw.append(da[i][:dim[i+1]])
+                db.append(da[i][dim[i+1]:])
+
 ##
 ##	Update the weights
 ##
 
             for i in range(len_dim):
-                weights[i][:,:-1] += -learn_rate*np.tensordot(da[i][:dim[i+1]], out[i], axes=0) #- lmd*weights[i][:,:-1]
-                weights[i][:,-1] += -learn_rate*da[i][dim[i+1]:] #- lmd*weights[i][:,-1]
+                weights[i][:,:-1] += -learn_rate*np.tensordot(dw[i], out[i], axes=0) #- lmd*weights[i][:,:-1]
+                weights[i][:,-1] += -learn_rate*db[i] #- lmd*weights[i][:,-1]
             
             #weights[weights < -1] = -1
             #weights[weights > 1] = 1
