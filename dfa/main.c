@@ -141,8 +141,10 @@ int main (int argc, char **argv){
 
     // START COUNTER
     clock_t timer;
-    timer = clock();
-
+    if(rank == size){
+        timer = clock();
+    }
+    
     for(int epoch = 0; epoch < epochs; epoch++){
         for(int i = 0; i < part; i++){
             /* PASS */
@@ -368,10 +370,12 @@ int main (int argc, char **argv){
     }
 
     // END COUNTER
-    timer = clock() - timer;
-    double time_taken = ((double)timer)/CLOCKS_PER_SEC;
-
-    printf("Training finished in %.2lfs.", time_taken);
+    if(rank == size){
+        timer = clock() - timer;
+        double time_taken = ((double)timer)/CLOCKS_PER_SEC;
+        printf("Training finished in %.2lfs.", time_taken);
+    }
+    
 
     MPI_Finalize();
 }
