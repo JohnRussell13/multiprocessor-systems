@@ -24,11 +24,17 @@ cpass: pass.c
 main: main.c
 	mpic++ main.c -o main
 
+cnob: no_bias.c
+	mpic++ no_bias.c -o no_bias
+
 cpass_run:
 	mpirun -np 7 ./cpass
 
 run:
-	mpirun -np 7 ./main
+	mpirun -np 10 ./main
+
+nob:
+	mpirun -np 7 ./no_bias
 
 .PHONY: clean
 clean:

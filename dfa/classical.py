@@ -5,6 +5,9 @@ import tensorflow.keras as keras
 import tensorflow as tf
 (x_train, y_train),(x_test, y_test) = tf.keras.datasets.mnist.load_data()
 
+import warnings
+warnings.filterwarnings("error")
+
 ##
 ##	Pass input trough the network
 ##
@@ -20,7 +23,14 @@ def net(input, weights, output_temp, len_dim, dim):
         if (i+1) < len_dim:
             output[i+1][output[i+1] < 0] = 0 #relu
         else:
-          output[i+1] = np.exp(output[-1])/np.sum(np.exp(output[-1])) #softmax
+            # for q in range(10):
+            #     try:
+            #         np.exp(output[-1][q])
+            #     except:
+            #         print(output)
+            #         print("------------------------------------------------------")
+            #         print(weights)
+            output[i+1] = np.exp(output[-1])/np.sum(np.exp(output[-1])) #softmax
     return output
 
 ##
@@ -147,7 +157,7 @@ import cv2
 import time
 
 size = 100
-size2 = 101
+size2 = 100
 
 k = 14/28
 
@@ -165,8 +175,8 @@ c = [i.flatten()/256 - 1/2 for i in c]
 d = y_test[:size2]
 d = [i.flatten() for i in d]
 
-epochs = 10
-dim = [14*14,100,100,10]
+epochs = 30
+dim = [14*14,10,10,10]
 start = time.perf_counter()
 epoch_w = train(a, b, c, d, epochs, dim)
 end = time.perf_counter()

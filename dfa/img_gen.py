@@ -5,8 +5,8 @@ import tensorflow.keras as keras
 import cv2
 (x_train, y_train),(x_test, y_test) = keras.datasets.mnist.load_data()
 
-size = 100
-size2 = 101
+size = 10000
+size2 = 10000
 
 k = 14/28
 

@@ -31,7 +31,9 @@ int largest(double *arr, int n){
 }
 
 int main (int argc, char **argv){
-    int dim[len_dim+1] = {in_len, 120, 120, 10};
+    int dim[len_dim+1] = {in_len, 100, 100, 10};
+
+    srand(time(NULL));
 
     /* MPI INIT */
     int size, rank;
@@ -39,8 +41,6 @@ int main (int argc, char **argv){
     MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     size--; // rank == size -> final part of the network
-
-    srand(rank + time(NULL));
 
     int per_layer = size/len_dim; // how many processors per layer
     int layer; // layer map
@@ -89,27 +89,27 @@ int main (int argc, char **argv){
     double **weights = (double**) malloc(layer_part_size * sizeof(double *));
     if(rank != size){
         for(int i = 0; i < layer_part_size; i++){
-            weights[i] = (double*) malloc((prev_layer_dim+1) * sizeof(weights));
+            weights[i] = (double*) malloc(prev_layer_dim * sizeof(weights));
         }
         for(int i = 0; i < layer_part_size; i++){
-            for(int j = 0; j < prev_layer_dim+1; j++){
+            for(int j = 0; j < prev_layer_dim; j++){
                 weights[i][j] = (double(rand())/RAND_MAX - 0.5) / 4; // random
             }
         }
     }
-    double **B = (double**) malloc(layer_part_size << 1 * sizeof(double *));
+    double **B = (double**) malloc(layer_part_size * sizeof(double *));
     if(rank != size){
-        for(int i = 0; i < layer_part_size << 1; i++){
+        for(int i = 0; i < layer_part_size; i++){
             B[i] = (double*) malloc((dim[len_dim]) * sizeof(B));
         }
-        for(int i = 0; i < layer_part_size << 1; i++){
+        for(int i = 0; i < layer_part_size; i++){
             for(int j = 0; j < dim[len_dim]; j++){
                 B[i][j] = (double(rand())/RAND_MAX); // random
-                B[i][j] = B[i][j] / sqrt(prev_layer_dim);
+                B[i][j] = B[i][j] / sqrt(layer_dim);
             }
         }
     }
-    double *da = (double*) malloc(layer_part_size << 1 * sizeof(double));
+    double *da = (double*) malloc(layer_part_size * sizeof(double));
     double *net_in = (double*) malloc(prev_layer_dim * sizeof(double));
     double *net_out = (double*) malloc(layer_part_size * sizeof(double));
     int *arr = (int*) malloc(last * sizeof(int));
@@ -119,7 +119,7 @@ int main (int argc, char **argv){
     
     /* TRAIN */
     double val_split = 0.2; // PART USED FOR TESTING
-    int epochs = 10; // NUMBER OF EPOCHS
+    int epochs = 30; // NUMBER OF EPOCHS
     double learn_rate = 0.05; //LEARNING COEF.
 
     int tot;
@@ -151,7 +151,7 @@ int main (int argc, char **argv){
                 }
 
                 for(int j = 0; j < layer_part_size; j++){
-                    net_out[j] = weights[j][layer_dim]; // bias
+                    net_out[j] = 0; // bias
                     for(int k = 0; k < prev_layer_dim; k++){
                         net_out[j] += weights[j][k] * net_in[k]; // weights * previous_layer_output
                     }
@@ -208,16 +208,12 @@ int main (int argc, char **argv){
                 else{
                     for(int j = 0; j < layer_part_size; j++){
                         da[j] = delta[part_of_layer*layer_part_size + j];
-                        da[layer_part_size + j] = delta[part_of_layer*layer_part_size + j];
                     }
                 }
                 for(int j = 0; j < layer_part_size; j++){
                     for(int k = 0; k < prev_layer_dim; k++){
                         weights[j][k] += -learn_rate * da[j]*net_in[k];
                     }
-                }
-                for(int j = 0; j < layer_part_size; j++){
-                    weights[j][prev_layer_dim] += -learn_rate * da[layer_part_size + j];
                 }
             }
         }
@@ -242,7 +238,7 @@ int main (int argc, char **argv){
                 double *net_out = (double*) malloc(layer_part_size * sizeof(double));
 
                 for(int j = 0; j < layer_part_size; j++){
-                    net_out[j] = weights[j][layer_dim]; // bias
+                    net_out[j] = 0; // bias
                     for(int k = 0; k < prev_layer_dim; k++){
                         net_out[j] += weights[j][k] * net_in[k]; // weights * previous_layer_output
                     }
@@ -304,7 +300,7 @@ int main (int argc, char **argv){
                 double *net_out = (double*) malloc(layer_part_size * sizeof(double));
 
                 for(int j = 0; j < layer_part_size; j++){
-                    net_out[j] = weights[j][layer_dim]; // bias
+                    net_out[j] = 0; // bias
                     for(int k = 0; k < prev_layer_dim; k++){
                         net_out[j] += weights[j][k] * net_in[k]; // weights * previous_layer_output
                     }
