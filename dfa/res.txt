@@ -1,22 +1,11 @@
-Epoch 1/10: Seen - Err: 2.29464; Acc: 0.20000. Unseen - Err: 2.27867; Acc: 0.13861.
-Epoch 2/10: Seen - Err: 2.37012; Acc: 0.05000. Unseen - Err: 2.30694; Acc: 0.13861.
-Epoch 3/10: Seen - Err: 2.38704; Acc: 0.05000. Unseen - Err: 2.29755; Acc: 0.09901.
-Epoch 4/10: Seen - Err: 2.24582; Acc: 0.10000. Unseen - Err: 2.15568; Acc: 0.21782.
-Epoch 5/10: Seen - Err: 2.08268; Acc: 0.35000. Unseen - Err: 2.02974; Acc: 0.26733.
-Epoch 6/10: Seen - Err: 1.90380; Acc: 0.40000. Unseen - Err: 1.88731; Acc: 0.41584.
-Epoch 7/10: Seen - Err: 1.69474; Acc: 0.60000. Unseen - Err: 1.74927; Acc: 0.51485.
-Epoch 8/10: Seen - Err: 1.54639; Acc: 0.60000. Unseen - Err: 1.66505; Acc: 0.50495.
-Epoch 9/10: Seen - Err: 1.44856; Acc: 0.60000. Unseen - Err: 1.62448; Acc: 0.49505.
-Epoch 10/10: Seen - Err: 1.36938; Acc: 0.60000. Unseen - Err: 1.59576; Acc: 0.46535.
-Training finished in 2.02s.
-Epoch 1/10: Seen - Err: 2.54104; Acc: 0.05000. Unseen - Err: 2.41916; Acc: 0.05941.
-Epoch 2/10: Seen - Err: 2.29723; Acc: 0.20000. Unseen - Err: 2.15304; Acc: 0.18812.
-Epoch 3/10: Seen - Err: 1.86724; Acc: 0.45000. Unseen - Err: 1.83669; Acc: 0.45545.
-Epoch 4/10: Seen - Err: 1.38883; Acc: 0.70000. Unseen - Err: 1.55313; Acc: 0.58416.
-Epoch 5/10: Seen - Err: 1.33911; Acc: 0.70000. Unseen - Err: 1.58321; Acc: 0.62376.
-Epoch 6/10: Seen - Err: 1.33699; Acc: 0.70000. Unseen - Err: 1.67203; Acc: 0.62376.
-Epoch 7/10: Seen - Err: 1.45262; Acc: 0.65000. Unseen - Err: 1.63714; Acc: 0.65347.
-Epoch 8/10: Seen - Err: 2.33255; Acc: 0.70000. Unseen - Err: 2.38967; Acc: 0.62376.
-Epoch 9/10: Seen - Err: 2.81563; Acc: 0.65000. Unseen - Err: 3.95801; Acc: 0.52475.
-Epoch 10/10: Seen - Err: 2.87576; Acc: 0.70000. Unseen - Err: 2.91726; Acc: 0.63366.
-Training finished in 15.62s.
+Epoch 1/10: Seen - Err: 2.42706; Acc: 0.10000. Unseen - Err: 2.36020; Acc: 0.12871.
+Epoch 2/10: Seen - Err: 2.13711; Acc: 0.45000. Unseen - Err: 2.02901; Acc: 0.33663.
+Epoch 3/10: Seen - Err: 2.07647; Acc: 0.45000. Unseen - Err: 1.83777; Acc: 0.42574.
+Epoch 4/10: Seen - Err: 1.51485; Acc: 0.65000. Unseen - Err: 1.52584; Acc: 0.59406.
+Epoch 5/10: Seen - Err: 1.20333; Acc: 0.65000. Unseen - Err: 1.49654; Acc: 0.58416.
+Epoch 6/10: Seen - Err: 1.17741; Acc: 0.70000. Unseen - Err: 1.66119; Acc: 0.53465.
+Epoch 7/10: Seen - Err: 1.28506; Acc: 0.65000. Unseen - Err: 1.77455; Acc: 0.61386.
+Epoch 8/10: Seen - Err: 1.29661; Acc: 0.60000. Unseen - Err: 1.72139; Acc: 0.64356.
+Epoch 9/10: Seen - Err: 1.08362; Acc: 0.60000. Unseen - Err: 1.62297; Acc: 0.65347.
+Epoch 10/10: Seen - Err: 1.00469; Acc: 0.65000. Unseen - Err: 1.54903; Acc: 0.67327.
+Training finished in 12.13s.
