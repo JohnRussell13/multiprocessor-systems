@@ -4,22 +4,32 @@
 #include <time.h>
 #include <mpi.h>
 
-#define size1 10
-#define size2 10
+#define size1 100
+#define size2 100
 #define in_len 14*14
 #define len_dim 3
 
-double largest(double *arr, int n){
+void print_arr(double *arr, int n){
+    for(int i = 0; i < n; i++){
+        printf("%lf ", arr[i]);
+    }
+    printf("\n");
+}
+
+int largest(double *arr, int n){
+    int ind = 0;
     double max = arr[0];
     for(int i = 0; i < n; i++){
         if(max < arr[i]){
+            ind = i;
             max = arr[i];
         }
     }
-    return max;
+    return ind;
 }
 
 int main (int argc, char **argv){
+    srand(time(NULL));
     /* MPI INIT */
     int size, rank;
     MPI_Init(&argc, &argv);
@@ -73,7 +83,7 @@ int main (int argc, char **argv){
 
         for(int i = 0; i < layer_part_size; i++){
             for(int j = 0; j < prev_layer_dim+1; j++){
-                weights[i][j] = 0.1; // random
+                weights[i][j] = (double(rand())/RAND_MAX - 0.5) / 4; // random
             }
         }
     }
@@ -81,7 +91,7 @@ int main (int argc, char **argv){
     double *net_in = (double*) malloc(prev_layer_dim * sizeof(double));
     
     /* TRAIN */
-    int perc = 10;
+    int perc = 100;
     int per = size1*perc/100;
     int t = 0, p = 0;
     int tag = 0; // TODO image count?
