@@ -9,12 +9,21 @@ old:
 pass_o:
 	python3 pass_cl.py
 
-run:
-	mpiexec -n 7 python main.py >> res.txt
+run_py:
+	mpiexec -n 7 python main.py > res.txt
 
 pass:
 	mpiexec -n 7 python pass.py
 
+img_gen:
+	python3 img_gen.py
+
+cpass: pass.c
+	mpic++ pass.c -o cpass
+
+run:
+	mpirun -np 7 ./cpass
+
 .PHONY: clean
 clean:
-#	rm -f 
+	rm -f $(ODIR)/*.o cpass img/*

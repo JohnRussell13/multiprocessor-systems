@@ -190,7 +190,7 @@ input = [i.flatten()/256 - 1/2 for i in input]
 output = y_test
 output = [i.flatten() for i in output]
 
-dim = [14*14,10,10,10]
+dim = [14*14,100,100,10]
 len_dim = len(dim)-1
 
 #MPI INIT

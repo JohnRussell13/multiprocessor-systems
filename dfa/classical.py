@@ -27,7 +27,7 @@ def net(input, weights, output_temp, len_dim, dim):
 ##	Train the network
 ##
 
-def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate = 0.01):
+def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate = 0.05):
 
 ##
 ##	Init values
@@ -146,7 +146,7 @@ def train(input, output,  blind_in, blind_out, epochs, dim, p = 0.2, learn_rate 
 import cv2
 import time
 
-size = int(len(x_train)/100)
+size = 100
 size2 = 101
 
 k = 14/28
@@ -166,7 +166,7 @@ d = y_test[:size2]
 d = [i.flatten() for i in d]
 
 epochs = 10
-dim = [14*14,10,10,10]
+dim = [14*14,100,100,10]
 start = time.perf_counter()
 epoch_w = train(a, b, c, d, epochs, dim)
 end = time.perf_counter()

@@ -9,3 +9,14 @@ Epoch 8/10: Seen - Err: 1.54639; Acc: 0.60000. Unseen - Err: 1.66505; Acc: 0.504
 Epoch 9/10: Seen - Err: 1.44856; Acc: 0.60000. Unseen - Err: 1.62448; Acc: 0.49505.
 Epoch 10/10: Seen - Err: 1.36938; Acc: 0.60000. Unseen - Err: 1.59576; Acc: 0.46535.
 Training finished in 2.02s.
+Epoch 1/10: Seen - Err: 2.54104; Acc: 0.05000. Unseen - Err: 2.41916; Acc: 0.05941.
+Epoch 2/10: Seen - Err: 2.29723; Acc: 0.20000. Unseen - Err: 2.15304; Acc: 0.18812.
+Epoch 3/10: Seen - Err: 1.86724; Acc: 0.45000. Unseen - Err: 1.83669; Acc: 0.45545.
+Epoch 4/10: Seen - Err: 1.38883; Acc: 0.70000. Unseen - Err: 1.55313; Acc: 0.58416.
+Epoch 5/10: Seen - Err: 1.33911; Acc: 0.70000. Unseen - Err: 1.58321; Acc: 0.62376.
+Epoch 6/10: Seen - Err: 1.33699; Acc: 0.70000. Unseen - Err: 1.67203; Acc: 0.62376.
+Epoch 7/10: Seen - Err: 1.45262; Acc: 0.65000. Unseen - Err: 1.63714; Acc: 0.65347.
+Epoch 8/10: Seen - Err: 2.33255; Acc: 0.70000. Unseen - Err: 2.38967; Acc: 0.62376.
+Epoch 9/10: Seen - Err: 2.81563; Acc: 0.65000. Unseen - Err: 3.95801; Acc: 0.52475.
+Epoch 10/10: Seen - Err: 2.87576; Acc: 0.70000. Unseen - Err: 2.91726; Acc: 0.63366.
+Training finished in 15.62s.
