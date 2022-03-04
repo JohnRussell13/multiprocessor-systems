@@ -10,7 +10,7 @@ pass_o:
 	python3 pass_cl.py
 
 run_py:
-	mpiexec -n 7 python main.py > res.txt
+	mpiexec -n 5 python main.py > res.txt
 
 pass:
 	mpiexec -n 7 python pass.py
@@ -31,11 +31,11 @@ cpass_run:
 	mpirun -np 7 ./cpass
 
 run:
-	mpirun -np 10 ./main
+	mpirun -np 15 ./main 100 50 30 10
 
 nob:
 	mpirun -np 7 ./no_bias
 
 .PHONY: clean
 clean:
-	rm -f $(ODIR)/*.o cpass main img/*
+	rm -f $(ODIR)/*.o cpass main img/* log/*
